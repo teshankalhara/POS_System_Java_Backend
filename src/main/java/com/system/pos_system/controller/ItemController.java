@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,5 +54,25 @@ public class ItemController {
         item.setItemCategory(itemCategory);
         itemService.createItem(item);
         return ResponseEntity.status(201).body("Item Added OK!");
+    }
+
+    @PutMapping("/item/{id}")
+    public ResponseEntity<String> updateItem(@PathVariable Long id, @RequestBody ItemReqDTO itemReqDTO) {
+        if (itemService.getItemById(id) == null) {
+            return ResponseEntity.status(201).body("Item Not Found!");
+        }
+        if (itemReqDTO.getItemCategoryId() == null) {
+            return ResponseEntity.status(201).body("Item Category Not Found!");
+        }
+        Item updatedItem = new Item();
+
+        updatedItem.setName(itemReqDTO.getName());
+        updatedItem.setDescription(itemReqDTO.getDescription());
+        updatedItem.setPrice(itemReqDTO.getPrice());
+        ItemCategory itemCategory = itemCategoryService.getItemCategoryById(itemReqDTO.getItemCategoryId());
+        updatedItem.setItemCategory(itemCategory);
+
+        itemService.updateItem(id, updatedItem);
+        return ResponseEntity.status(201).body("Updated Item!");
     }
 }
