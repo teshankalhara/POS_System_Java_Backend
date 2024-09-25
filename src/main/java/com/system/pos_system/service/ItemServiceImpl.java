@@ -15,32 +15,35 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getAllItem() {
-        List<Item> items = itemRepository.findAll();
-        return items;
+        return itemRepository.findAll();
     }
 
     @Override
     public Item createItem(Item item) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createItem'");
+        return itemRepository.save(item);
     }
 
     @Override
     public Item getItemById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getItemById'");
+        return itemRepository.findById(id).orElse(null);
     }
 
     @Override
     public Item updateItem(Long id, Item item) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateItem'");
+        Item existingItem = itemRepository.findById(id).orElse(null);
+        if (existingItem != null) {
+            existingItem.setName(item.getName());
+            existingItem.setPrice(item.getPrice());
+            existingItem.setDescription(item.getDescription());
+
+            return itemRepository.save(existingItem);
+        }
+        return null;
     }
 
     @Override
     public void deleteItem(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteItem'");
+        itemRepository.deleteById(id);
     }
 
 }
