@@ -24,10 +24,10 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public Stock updateStock(Long id, Integer newQuantity) {
+    public Stock updateStock(Long id, Stock stock) {
         Stock existingStock = stockRepository.findById(id).orElse(null);
         if (existingStock != null) {
-            existingStock.setQty(newQuantity);
+            existingStock.setQty(stock.getQty());
             return stockRepository.save(existingStock);
         }
         return null;
