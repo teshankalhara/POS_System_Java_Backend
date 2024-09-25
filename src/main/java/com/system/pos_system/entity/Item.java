@@ -28,6 +28,6 @@ public class Item {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private ItemCategory itemCategory;
 }

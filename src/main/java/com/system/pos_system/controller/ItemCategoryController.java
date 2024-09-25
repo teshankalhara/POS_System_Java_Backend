@@ -27,8 +27,12 @@ public class ItemCategoryController {
     }
 
     @GetMapping("/category/{id}")
-    public ResponseEntity<ItemCategory> getItemCategoryById(@PathVariable Long id) {
-        return ResponseEntity.status(200).body(itemCategoryService.getItemCategoryById(id));
+    public ResponseEntity<?> getItemCategoryById(@PathVariable Long id) {
+        ItemCategory itemCategory = itemCategoryService.getItemCategoryById(id);
+        if (itemCategory == null) {
+            return ResponseEntity.status(404).body("Item Category Not Found!");
+        }
+        return ResponseEntity.status(200).body(itemCategory);
     }
 
     @PostMapping("/category")

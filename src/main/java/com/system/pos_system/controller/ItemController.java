@@ -32,8 +32,12 @@ public class ItemController {
     }
 
     @GetMapping("/item/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable Long id) {
-        return ResponseEntity.status(200).body(itemService.getItemById(id));
+    public ResponseEntity<?> getItemById(@PathVariable Long id) {
+        Item item = itemService.getItemById(id);
+        if (item == null) {
+            return ResponseEntity.status(404).body("Item Not Found!");
+        }
+        return ResponseEntity.status(200).body(item);
     }
 
     @PostMapping("/item")
