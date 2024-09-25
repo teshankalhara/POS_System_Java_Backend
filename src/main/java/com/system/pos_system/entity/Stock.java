@@ -22,6 +22,6 @@ public class Stock {
     private Integer qty;
 
     @OneToOne
-    @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false, unique = true)
+    @JoinColumn(name = "item_id", nullable = false, unique = true)
     private Item item;
 }

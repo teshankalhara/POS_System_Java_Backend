@@ -13,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.system.pos_system.dto.StockReqDTO;
+import com.system.pos_system.entity.Item;
 import com.system.pos_system.entity.Stock;
+import com.system.pos_system.service.ItemService;
 import com.system.pos_system.service.StockService;
 
 @RestController
 public class StockController {
     @Autowired
     private StockService stockService;
+
+    @Autowired
+    private ItemService itemService;
 
     @GetMapping("/stock")
     public ResponseEntity<List<Stock>> getAllStock() {
@@ -36,8 +41,20 @@ public class StockController {
     }
 
     @PostMapping("/stock")
-    public ResponseEntity<Stock> createStock(@RequestBody Stock stock) {
-        return ResponseEntity.status(201).body(stockService.addStock(stock));
+    public ResponseEntity<String> createStock(@RequestBody StockReqDTO stockReqDTO) {
+        if (stockReqDTO.getItemId() == null) {
+            return ResponseEntity.status(422).body("Stock Item ID Missing!");
+        }
+        if (stockReqDTO.getQty() < 0) {
+            return ResponseEntity.status(422).body("Stock Qty Invalid!");
+        }
+        Stock stock = new Stock();
+        stock.setQty(stockReqDTO.getQty());
+        Item item = itemService.getItemById(stockReqDTO.getItemId());
+        stock.setItem(item);
+
+        stockService.addStock(stock);
+        return ResponseEntity.status(201).body("Stock Added!");
     }
 
     @DeleteMapping("/stock/{id}")

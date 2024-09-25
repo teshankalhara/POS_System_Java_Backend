@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class StockReqDTO {
     private Integer qty;
+    private Long itemId;
 }
