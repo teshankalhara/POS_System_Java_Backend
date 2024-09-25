@@ -12,7 +12,7 @@ public interface StockService {
 
     Stock addStock(Stock stock);
 
-    Stock updateStock(Long id, int newQuantity);
+    Stock updateStock(Long id, Integer newQuantity);
 
     Stock getStockByItemId(Long itemId);
 
