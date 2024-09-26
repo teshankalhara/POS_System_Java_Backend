@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.system.pos_system.dto.StockReqDTO;
@@ -19,6 +20,7 @@ import com.system.pos_system.service.ItemService;
 import com.system.pos_system.service.StockService;
 
 @RestController
+@RequestMapping("/stock")
 public class StockController {
     @Autowired
     private StockService stockService;
@@ -26,12 +28,12 @@ public class StockController {
     @Autowired
     private ItemService itemService;
 
-    @GetMapping("/stock")
+    @GetMapping
     public ResponseEntity<List<Stock>> getAllStock() {
         return ResponseEntity.status(200).body(stockService.getAllStock());
     }
 
-    @GetMapping("/stock/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getStockByItemId(@PathVariable Long id) {
         Stock stock = stockService.getStockByItemId(id);
         if (stock == null) {
@@ -40,7 +42,7 @@ public class StockController {
         return ResponseEntity.status(200).body(stock);
     }
 
-    @PostMapping("/stock")
+    @PostMapping
     public ResponseEntity<String> createStock(@RequestBody StockReqDTO stockReqDTO) {
         if (stockReqDTO.getItemId() == null) {
             return ResponseEntity.status(422).body("Stock Item ID Missing!");
@@ -57,7 +59,7 @@ public class StockController {
         return ResponseEntity.status(201).body("Stock Added!");
     }
 
-    @DeleteMapping("/stock/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStock(@PathVariable Long id) {
         if (stockService.getStockByItemId(id) == null) {
             return ResponseEntity.status(404).body("Stock Not Found!");
@@ -66,7 +68,7 @@ public class StockController {
         return ResponseEntity.status(201).body("Stock Deleted!");
     }
 
-    @PutMapping("/stock/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateStock(@PathVariable Long id, @RequestBody StockReqDTO stockReqDTO) {
         if (stockService.getStockByItemId(id) == null) {
             return ResponseEntity.status(404).body("Stock Not Found!");

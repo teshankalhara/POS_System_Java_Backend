@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.system.pos_system.dto.ItemReqDTO;
@@ -19,6 +20,7 @@ import com.system.pos_system.service.ItemCategoryService;
 import com.system.pos_system.service.ItemService;
 
 @RestController
+@RequestMapping("/item")
 public class ItemController {
     @Autowired
     private ItemService itemService;
@@ -26,12 +28,12 @@ public class ItemController {
     @Autowired
     private ItemCategoryService itemCategoryService;
 
-    @GetMapping("/item")
+    @GetMapping
     public ResponseEntity<List<Item>> getAllItem() {
         return ResponseEntity.status(200).body(itemService.getAllItem());
     }
 
-    @GetMapping("/item/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getItemById(@PathVariable Long id) {
         Item item = itemService.getItemById(id);
         if (item == null) {
@@ -40,7 +42,7 @@ public class ItemController {
         return ResponseEntity.status(200).body(item);
     }
 
-    @PostMapping("/item")
+    @PostMapping
     public ResponseEntity<String> createItem(@RequestBody ItemReqDTO itemReqDTO) {
         if (itemReqDTO.getName() == null || itemReqDTO.getName() == "") {
             return ResponseEntity.status(422).body("Item Name Missing");
@@ -61,7 +63,7 @@ public class ItemController {
         return ResponseEntity.status(201).body("Item Added OK!");
     }
 
-    @PutMapping("/item/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updateItem(@PathVariable Long id, @RequestBody ItemReqDTO itemReqDTO) {
         if (itemService.getItemById(id) == null) {
             return ResponseEntity.status(201).body("Item Not Found!");
@@ -81,7 +83,7 @@ public class ItemController {
         return ResponseEntity.status(201).body("Updated Item!");
     }
 
-    @DeleteMapping("/item/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteItem(@PathVariable Long id) {
         if (itemService.getItemById(id) == null) {
             return ResponseEntity.status(404).body("Item Not Found!");

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.system.pos_system.dto.ItemCategoryReqDTO;
@@ -17,16 +18,17 @@ import com.system.pos_system.entity.ItemCategory;
 import com.system.pos_system.service.ItemCategoryService;
 
 @RestController
+@RequestMapping("/category")
 public class ItemCategoryController {
     @Autowired
     private ItemCategoryService itemCategoryService;
 
-    @GetMapping("/category")
+    @GetMapping
     public ResponseEntity<List<ItemCategory>> getAllItemCategories() {
         return ResponseEntity.status(200).body(itemCategoryService.getAllItemCategories());
     }
 
-    @GetMapping("/category/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getItemCategoryById(@PathVariable Long id) {
         ItemCategory itemCategory = itemCategoryService.getItemCategoryById(id);
         if (itemCategory == null) {
@@ -35,12 +37,12 @@ public class ItemCategoryController {
         return ResponseEntity.status(200).body(itemCategory);
     }
 
-    @PostMapping("/category")
+    @PostMapping
     public ResponseEntity<ItemCategory> createItemCategory(@RequestBody ItemCategory itemCategory) {
         return ResponseEntity.status(201).body(itemCategoryService.createItemCategory(itemCategory));
     }
 
-    @PutMapping("/category/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updateItemCategory(@PathVariable Long id,
             @RequestBody ItemCategoryReqDTO itemCategoryReqDTO) {
         if (itemCategoryReqDTO.getName() == null || itemCategoryReqDTO.getName() == "") {
@@ -52,7 +54,7 @@ public class ItemCategoryController {
         return ResponseEntity.status(201).body("Updated Item Category!");
     }
 
-    @DeleteMapping("/category/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteItemCategory(@PathVariable Long id) {
         if (itemCategoryService.getItemCategoryById(id) == null) {
             return ResponseEntity.status(404).body("Item Category Not Found!");
