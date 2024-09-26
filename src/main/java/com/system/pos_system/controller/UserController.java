@@ -25,6 +25,6 @@ public class UserController {
             return ResponseEntity.status(422).body("Password Required!");
         }
         userService.createUser(user);
-        return ResponseEntity.status(422).body("User Created!");
+        return ResponseEntity.status(201).body("User Created!\n" + user);
     }
 }

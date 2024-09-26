@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // encode the password, so that it is not human readable
         return userRepository.save(user);
     }
-
 }
