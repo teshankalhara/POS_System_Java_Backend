@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/sign")
     public ResponseEntity<String> createUser(@RequestBody User user) {
         if (user.getUsername() == null || user.getUsername() == "") {
             return ResponseEntity.status(422).body("Username Required!");
@@ -25,6 +25,6 @@ public class UserController {
             return ResponseEntity.status(422).body("Password Required!");
         }
         userService.createUser(user);
-        return ResponseEntity.status(201).body("User Created!\n" + user);
+        return ResponseEntity.status(201).body("User Created!\n" + user.toString());
     }
 }

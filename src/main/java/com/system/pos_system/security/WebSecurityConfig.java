@@ -15,8 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import jakarta.el.ELException;
-
 @Configuration
 @EnableMethodSecurity
 public class WebSecurityConfig {
@@ -57,7 +55,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(
                         auth -> auth
-                                .requestMatchers("/user").permitAll()// allowing auth/login auth/register paths
+                                .requestMatchers("/user/***").permitAll()// allowing auth/login auth/register paths
                                 .anyRequest().authenticated()); // user needs to login to access everything else
 
         http.authenticationProvider(authenticationProvider());
