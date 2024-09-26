@@ -44,7 +44,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody OrderReqDTO orderReqDTO) {
+    public ResponseEntity<?> createOrder(@RequestBody OrderReqDTO orderReqDTO) {
         Order order = new Order();
         List<OrderItem> orderItems = new ArrayList<>();
         double totalPrice = 0.0;
@@ -53,7 +53,7 @@ public class OrderController {
             Stock stock = stockService.getStockByItemId(itemDto.getItemId());
 
             if (stock == null || stock.getQty() < itemDto.getQuantity()) {
-                return ResponseEntity.status(400).body(null);
+                return ResponseEntity.status(400).body("Item Qyt Problem!!");
             }
 
             stock.setQty(stock.getQty() - itemDto.getQuantity());
