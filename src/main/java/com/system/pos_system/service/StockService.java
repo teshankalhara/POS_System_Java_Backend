@@ -16,5 +16,7 @@ public interface StockService {
 
     Stock getStockByItemId(Long itemId);
 
+    Stock getStockById(Long itemId);
+
     void deleteStock(Long id);
 }

@@ -37,7 +37,7 @@ public class StockController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getStockByItemId(@PathVariable Long id) {
-        Stock stock = stockService.getStockByItemId(id);
+        Stock stock = stockService.getStockById(id);
         if (stock == null) {
             return ResponseEntity.status(404).body("Stock Not Found!");
         }
@@ -63,7 +63,7 @@ public class StockController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStock(@PathVariable Long id) {
-        if (stockService.getStockByItemId(id) == null) {
+        if (stockService.getStockById(id) == null) {
             return ResponseEntity.status(404).body("Stock Not Found!");
         }
         stockService.deleteStock(id);
@@ -72,7 +72,7 @@ public class StockController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateStock(@PathVariable Long id, @RequestBody StockReqDTO stockReqDTO) {
-        if (stockService.getStockByItemId(id) == null) {
+        if (stockService.getStockById(id) == null) {
             return ResponseEntity.status(404).body("Stock Not Found!");
         }
         Stock updatedStock = new Stock();

@@ -34,13 +34,17 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public Stock getStockByItemId(Long itemId) {
+    public Stock getStockById(Long itemId) {
         return stockRepository.findById(itemId).orElse(null);
     }
 
     @Override
     public void deleteStock(Long id) {
         stockRepository.deleteById(id);
+    }
+
+    public Stock getStockByItemId(Long itemId) {
+        return stockRepository.findByItemId(itemId);
     }
 
 }

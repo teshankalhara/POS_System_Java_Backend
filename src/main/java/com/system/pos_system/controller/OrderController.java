@@ -52,10 +52,17 @@ public class OrderController {
         double totalPrice = 0.0;
 
         for (OrderReqDTO.OrderItemDTO itemDto : orderReqDTO.getOrderItems()) {
-            Stock stock = stockService.getStockByItemId(itemDto.getItemId());
+            if (itemDto.getItemId() == null || itemDto.getQuantity() == null || itemDto.getQuantity() <= 0) {
+                return ResponseEntity.status(400).body("Invalid item ID or quantity!");
+            }
 
-            if (stock == null || stock.getQty() < itemDto.getQuantity()) {
-                return ResponseEntity.status(400).body("Item Qyt Problem!!");
+            Stock stock = stockService.getStockByItemId(itemDto.getItemId());
+            if (stock == null) {
+                return ResponseEntity.status(404).body("Item not found for ID: " + itemDto.getItemId());
+            }
+
+            if (stock.getQty() < itemDto.getQuantity()) {
+                return ResponseEntity.status(400).body("Insufficient stock for item ID: " + itemDto.getItemId());
             }
 
             stock.setQty(stock.getQty() - itemDto.getQuantity());

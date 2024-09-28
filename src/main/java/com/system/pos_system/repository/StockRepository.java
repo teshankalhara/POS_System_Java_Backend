@@ -7,5 +7,5 @@ import com.system.pos_system.entity.Stock;
 
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
-
+    Stock findByItemId(Long itemId);
 }
