@@ -40,7 +40,10 @@ public class ItemCategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<ItemCategory> createItemCategory(@RequestBody ItemCategory itemCategory) {
+    public ResponseEntity<?> createItemCategory(@RequestBody ItemCategory itemCategory) {
+        if (itemCategory.getName() == "" || itemCategory.getName() == null) {
+            return ResponseEntity.status(400).body("Category Name Required!");
+        }
         return ResponseEntity.status(201).body(itemCategoryService.createItemCategory(itemCategory));
     }
 
@@ -48,7 +51,7 @@ public class ItemCategoryController {
     public ResponseEntity<String> updateItemCategory(@PathVariable Long id,
             @RequestBody ItemCategoryReqDTO itemCategoryReqDTO) {
         if (itemCategoryReqDTO.getName() == null || itemCategoryReqDTO.getName() == "") {
-            return ResponseEntity.status(422).body("Item Category Name Missing!");
+            return ResponseEntity.status(422).body("Item Category Name Required!");
         }
         ItemCategory itemCategory = new ItemCategory();
         itemCategory.setName(itemCategoryReqDTO.getName());
