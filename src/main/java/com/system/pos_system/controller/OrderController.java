@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,16 +54,18 @@ public class OrderController {
 
         for (OrderReqDTO.OrderItemDTO itemDto : orderReqDTO.getOrderItems()) {
             if (itemDto.getItemId() == null || itemDto.getQuantity() == null || itemDto.getQuantity() <= 0) {
-                return ResponseEntity.status(400).body("Invalid item ID or quantity!");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid item ID or quantity!");
             }
 
             Stock stock = stockService.getStockByItemId(itemDto.getItemId());
             if (stock == null) {
-                return ResponseEntity.status(404).body("Item not found for ID: " + itemDto.getItemId());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Item not found for ID: " + itemDto.getItemId());
             }
 
             if (stock.getQty() < itemDto.getQuantity()) {
-                return ResponseEntity.status(400).body("Insufficient stock for item ID: " + itemDto.getItemId());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Insufficient stock for item ID: " + itemDto.getItemId());
             }
 
             stock.setQty(stock.getQty() - itemDto.getQuantity());
@@ -83,7 +86,7 @@ public class OrderController {
 
         Order savedOrder = orderService.createOrder(order);
 
-        return ResponseEntity.status(201).body(savedOrder);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
     }
 
     @DeleteMapping("/{id}")
